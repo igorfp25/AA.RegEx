@@ -1,0 +1,14 @@
+{
+	"label": "Custom - RegEx",
+	"description": "A custom package for Regular Expressions.",
+
+	"RegexPartialMatchCondition.label":"RegEx partial match is found",
+	"RegexPartialMatchCondition.description":"Checks if any part of the input string matches the given regex pattern.",
+	"RegexPartialMatchCondition.input.label":"Input String",
+	"RegexPartialMatchCondition.pattern.label":"Regex Pattern",
+	"RegexPartialMatchCondition.matchCase.label":"Match Case",
+	"extractNamedRegexGroup.label":"Extract Named RegEx Group",
+	"extractNamedRegexGroup.description":"Extracts all matches for a specified named group from the input string. The output is a list of all matches for the specified named group.",
+	"extractNamedRegexGroup.node_label":"Extract RegEx group {{groupName}}"
+	
+}
