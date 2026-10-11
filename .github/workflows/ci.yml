@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
   
   push:
-    branches: [ "main", "master" ]
+    branches: [ "main", "master", "feature_GithubWorkflow" ]
   pull_request:
     branches: [ "main", "master" ]
 
