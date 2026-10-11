@@ -1,0 +1,47 @@
+name: AA RegEx Package CI/CD
+
+# 1. Triggers: Define when the pipeline should run
+on:
+  # Enables a manual "Run workflow" button in the GitHub Actions UI
+  workflow_dispatch:
+  
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  build-and-test:
+    # 2. Environment: Use a clean Ubuntu virtual machine
+    runs-on: ubuntu-latest
+
+    steps:
+      # 3. Checkout Code: Pull your repository source code into the runner
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # 4. Setup Java: Install the JDK version your AA package requires (usually Java 11)
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '11' # Match the Java version used locally
+          distribution: 'temurin'
+
+      # 5. Setup Gradle: Caches dependencies to speed up future pipeline runs
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      # 6. Grant Permissions: Ensure the Gradle wrapper script is executable on Linux
+      - name: Grant execute permission for Gradle wrapper
+        run: chmod +x gradlew
+
+      # 7. Build & Test: Run your exact manual command
+      - name: Run Clean Build and ShadowJar
+        run: ./gradlew clean build shadowJar
+
+      # 8. Save Artifacts: Store the generated JAR file so you can download and test it
+      - name: Upload Package Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: AA-package-jar
+          path: build/libs/*.jar
