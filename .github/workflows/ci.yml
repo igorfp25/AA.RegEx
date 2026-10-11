@@ -3,18 +3,17 @@ name: AA RegEx Package CI/CD
 # 1. Triggers: Define when the pipeline should run
 on:
   # Enables a manual "Run workflow" button in the GitHub Actions UI
-  workflow_dispatch:
-  
+  workflow_dispatch:   
   push:
-    branches: [ "main", "master", "feature_GithubWorkflow" ]
+    branches: [ "main", "feature_GithubWorkflow" ]
+    tags: [ "v*.*.*" ] # Triggers automatically when you push a version tag like v1.0.0
   pull_request:
-    branches: [ "main", "master" ]
+    branches: [ "main" ]
 
 jobs:
   build-and-test:
     # 2. Environment: Use a clean Ubuntu virtual machine
     runs-on: ubuntu-latest
-
     steps:
       # 3. Checkout Code: Pull your repository source code into the runner
       - name: Checkout Repository
@@ -24,7 +23,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          java-version: '11' # Match the Java version used locally
+          java-version: '11'
           distribution: 'temurin'
 
       # 5. Setup Gradle: Caches dependencies to speed up future pipeline runs
@@ -39,9 +38,38 @@ jobs:
       - name: Run Clean Build and ShadowJar
         run: ./gradlew clean build shadowJar
 
-      # 8. Save Artifacts: Store the generated JAR file so you can download and test it
+      # 8. Publish visual test results
+      - name: Publish Test Results
+        uses: dorny/test-report@v3
+        if: always() # Ensures this runs even if some tests fail, so you can see the errors
+        with:
+          name: JUnit Test Results
+          path: 'build/test-results/test/*.xml'
+          reporter: java-junit
+
+      
+      # 9. Save Artifacts: Store the generated JAR file so you can download and test it
       - name: Upload Package Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: AA-package-jar
+          name: AA.RegEx-package-jar
           path: build/libs/*.jar
+
+  # 10. Automatically create a GitHub Release when a tag is pushed
+  release:
+    needs: build-and-test
+    if: startsWith(github.ref, 'refs/tags/v') # Only runs when you push a version tag
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Required permission for GitHub Actions to create a release
+    steps:
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: automation-anywhere-package-jar
+          path: build/libs/
+
+      - name: Create Release and Upload Jar
+        uses: softprops/action-gh-release@v2
+        with:
+          files: build/libs/*.jar
