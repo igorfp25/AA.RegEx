@@ -66,6 +66,16 @@ configure(allprojects){
 		exclude 'META-INF/*.RSA'
 	}
 
+	test {
+		useTestNG() // Ensures Gradle uses TestNG for your tests
+		
+		reports {
+			junitXml.required = true
+			// Forces Gradle to include individual test case metadata in the XML report
+			junitXml.outputPerTestCase = true 
+		}
+	}
+
 	dependencies {
 		annotationProcessor name: 'package-compileonly-sdk', version: '1.6.0'
 
