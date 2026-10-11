@@ -5,7 +5,7 @@ on:
   # Enables a manual "Run workflow" button in the GitHub Actions UI
   workflow_dispatch:   
   push:
-    branches: [ "main", "feature_GithubWorkflow" ]
+    branches: [ "main" ]
     tags: [ "v*.*.*" ] # Triggers automatically when you push a version tag like v1.0.0
   pull_request:
     branches: [ "main" ]
