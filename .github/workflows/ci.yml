@@ -40,7 +40,7 @@ jobs:
 
       # 8. Publish visual test results
       - name: Publish Test Results
-        uses: dorny/test-report@v3
+        uses: dorny/test-reporter@v3
         if: always() # Ensures this runs even if some tests fail, so you can see the errors
         with:
           name: JUnit Test Results
