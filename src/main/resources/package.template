@@ -4,8 +4,8 @@
   "description": "[[description]]",
   "group": "com.byIgorfp",
   "artifactName": "",
-  "packageVersion": "1.1",
-  "codeVersion": "1.0",
+  "packageVersion": "1.0.1",
+  "codeVersion": "1.0.1",
   "author": "IgorFP",
   "vendor":"IgorFP",
   "commands": []

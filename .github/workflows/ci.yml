@@ -71,7 +71,7 @@ jobs:
       - name: Download Build Artifact
         uses: actions/download-artifact@v4
         with:
-          name: automation-anywhere-package-jar
+          name: AA.RegEx-package-jar
           path: build/libs/
 
       - name: Create Release and Upload Jar
